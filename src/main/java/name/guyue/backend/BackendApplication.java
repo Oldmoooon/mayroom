@@ -13,8 +13,9 @@ import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@SpringBootApplication public class BackendApplication {
+@SpringBootApplication @EnableJpaAuditing public class BackendApplication {
 
     public static void main(String... args) {
         SpringApplication.run(BackendApplication.class, args);
