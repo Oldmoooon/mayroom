@@ -19,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import name.guyue.backend.enums.BedroomTypeEnum;
 import name.guyue.backend.enums.ElectricTypeEnum;
@@ -45,6 +46,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @Setter
 @Getter
+@NoArgsConstructor
 public class House {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
