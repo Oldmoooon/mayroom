@@ -39,10 +39,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  * @date 2019-03-25
  */
 @Entity
-@Table(indexes = {
-    @Index(columnList = "openId"),
-    @Index(columnList = "state"),
-})
 @EntityListeners(AuditingEntityListener.class)
 @Setter
 @Getter

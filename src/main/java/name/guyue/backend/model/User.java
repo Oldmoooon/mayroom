@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import name.guyue.backend.enums.GroupEnum;
 import name.guyue.backend.enums.UserStateTypeEnum;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -31,10 +30,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
  */
 @Entity
 @Table(indexes = {
-    @Index(columnList = "openId"),
-    @Index(columnList = "group"),
-    @Index(columnList = "password"),
-    @Index(columnList = "state"),
+    @Index(columnList = "phone"),
 })
 @EntityListeners(AuditingEntityListener.class)
 @Setter
@@ -45,11 +41,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String openId;
 
     /** 用户组，用来做权限管理 */
-    @Column(unique = true, nullable = false)
+    @Column(name = "`group`", nullable = false)
     @Enumerated(EnumType.STRING)
     GroupEnum group = GroupEnum.Normal;
 
@@ -57,7 +53,6 @@ public class User {
     private String phone;
 
     /** 密码，此处应该是密码的哈希 */
-    @UpdateTimestamp
     private String password;
 
     /** 提交的房源，删除用户，他提交的所有房源都会被删掉 */

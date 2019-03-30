@@ -36,6 +36,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter:+'
+    implementation 'com.google.code.gson:gson:+'
     compile 'org.springframework.boot:spring-boot-starter-web:+'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa:+'
     compile 'org.springframework.boot:spring-boot-starter-aop:+'

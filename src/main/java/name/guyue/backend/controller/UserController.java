@@ -55,7 +55,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/query",method = RequestMethod.GET)
-    public Response query(@RequestParam(name = "id") String id, @RequestParam(name = "openId") String openId) {
+    public Response query(
+        @RequestParam(name = "id", required = false) String id,
+        @RequestParam(name = "openId", required = false) String openId
+    ) {
         return service.query(id, openId);
     }
 

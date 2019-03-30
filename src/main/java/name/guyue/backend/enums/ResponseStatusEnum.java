@@ -7,4 +7,5 @@ package name.guyue.backend.enums;
 public enum ResponseStatusEnum {
     Ok,
     AuthFailure,
+    UserNotFound,
 }

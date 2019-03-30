@@ -25,8 +25,6 @@ public class DemoUser {
 
     private String password;
 
-    protected DemoUser() { }
-
     public DemoUser(String username, String password) {
         this.username = username;
         this.password = password;

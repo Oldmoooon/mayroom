@@ -9,6 +9,9 @@ import name.guyue.backend.model.Response;
  */
 public class ResponseUtil {
     public static boolean isOk(Response response) {
+        if (response == null) {
+            return false;
+        }
         return response.getStatus().equals(ResponseStatusEnum.Ok);
     }
 }
