@@ -50,7 +50,6 @@ public class House {
 
     /** 房源提交者，删除房源，不影响提交者，不可以为空 */
     @ManyToOne(cascade={CascadeType.MERGE, CascadeType.REFRESH}, optional=false)
-    @JoinColumn(name="house_id")
     private User author;
 
     /** 房源状态 */
@@ -159,6 +158,6 @@ public class House {
 
     /** 图片 */
     @ElementCollection
-    @CollectionTable(name = "house_photos", joinColumns = @JoinColumn(name = "house_id"))
+    @CollectionTable(name = "house_photos")
     private List<String> photos;
 }

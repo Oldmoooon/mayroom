@@ -8,4 +8,5 @@ public enum ResponseStatusEnum {
     Ok,
     AuthFailure,
     UserNotFound,
+    UnsolvedException,
 }
