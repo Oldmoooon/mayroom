@@ -25,7 +25,7 @@ public interface UserService {
     Response<User> createNormalUser(String openId);
 
     /** 创建一个管理员帐号，并把帐号返回给前端 */
-    Response<User> createAdminUser(String password);
+    Response<User> createAdminUser(Long userId, String password);
 
     /** 更新用户的信息， key/字段名 value/新值 */
     Response<User> update(Long id, Map<String, Object> fields);

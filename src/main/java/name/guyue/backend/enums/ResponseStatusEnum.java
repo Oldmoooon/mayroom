@@ -10,4 +10,6 @@ public enum ResponseStatusEnum {
     UserNotFound,
     UnsolvedException,
     HouseNotFound,
+    GroupError,
+    PermissionError,
 }

@@ -72,9 +72,11 @@ public class UserController {
 
     @RequestMapping(value = "/user/admin/create",method = RequestMethod.POST)
     public Response createAdminUser(
-        @RequestParam(name = "password") String password
+        @RequestParam(name = "password") String password,
+        HttpSession session
     ) {
-        return service.createAdminUser(password);
+        Object userId = session.getAttribute(session.getId());
+        return service.createAdminUser((Long)userId, password);
     }
 
     @RequestMapping(value = "/user/update/{id}",method = RequestMethod.PATCH)
