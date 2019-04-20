@@ -50,7 +50,7 @@ public class UserController {
     ) {
         var resp = service.adminLogin(id, openGid, password);
         if (ResponseUtil.isOk(resp)) {
-            session.setAttribute(session.getId(), id);
+            session.setAttribute(session.getId(), resp.getData().getId());
         }
         return resp;
     }

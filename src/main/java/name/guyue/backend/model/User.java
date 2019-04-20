@@ -1,6 +1,6 @@
 package name.guyue.backend.model;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -41,7 +41,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String openId;
 
     /** 用户组，用来做权限管理 */
