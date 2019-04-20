@@ -14,6 +14,4 @@ public enum HouseStateTypeEnum {
     Pass,
     /** 已失效 */
     Disabled,
-    /** 正常房源 */
-    Normal,
 }

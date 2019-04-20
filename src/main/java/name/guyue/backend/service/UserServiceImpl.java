@@ -1,6 +1,6 @@
 package name.guyue.backend.service;
 
-import com.google.gson.Gson;
+import java.util.List;
 import java.util.Map;
 import name.guyue.backend.db.UserRepository;
 import name.guyue.backend.enums.GroupEnum;
@@ -8,7 +8,7 @@ import name.guyue.backend.enums.ResponseStatusEnum;
 import name.guyue.backend.enums.UserStateTypeEnum;
 import name.guyue.backend.model.Response;
 import name.guyue.backend.model.User;
-import name.guyue.backend.util.TypeUtil;
+import name.guyue.backend.util.JsonUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -24,16 +24,18 @@ public class UserServiceImpl implements UserService {
         this.repository = repository;
     }
 
+    /** TODO 做登录验证、只有在群里的玩家才能登录 */
     @Override public Response<User> login(String openId, String openGid, String token) {
         return null;
     }
 
-    @Override public Response<User> adminLogin(String id, String openGid, String password) {
+    @Override public Response<User> adminLogin(Long id, String openGid, String password) {
         Response<User> response = new Response<>();
-        repository.findById(Long.valueOf(id)).ifPresentOrElse(user -> {
+        repository.findById(id).ifPresentOrElse(user -> {
             if (user.getPassword().equals(password)) {
                 response.setStatus(ResponseStatusEnum.Ok);
                 response.setData(user);
+                // TODO 管理员在某个群，所以把这个群的gid加入到白名单
             } else {
                 response.setStatus(ResponseStatusEnum.AuthFailure);
                 response.setMessage("密码错误");
@@ -45,10 +47,10 @@ public class UserServiceImpl implements UserService {
         return response;
     }
 
-    @Override public Response<User> query(String id, String openId) {
+    @Override public Response<User> query(Long id, String openId) {
         Response<User> response = new Response<>();
         if (StringUtils.isEmpty(id)) {
-            repository.findById(Long.valueOf(id)).ifPresent(response::setData);
+            repository.findById(id).ifPresent(response::setData);
         }
         if (StringUtils.isEmpty(openId)) {
             repository.findUserByOpenId(openId).ifPresent(response::setData);
@@ -60,6 +62,18 @@ public class UserServiceImpl implements UserService {
         return response;
     }
 
+    @Override public Response<User> createNormalUser(String openId) {
+        User user = new User();
+        user.setGroup(GroupEnum.Normal);
+        user.setState(UserStateTypeEnum.NotVerify);
+        User save = repository.save(user);
+        Response<User> response = new Response<>();
+        response.setData(save);
+        response.setStatus(ResponseStatusEnum.Ok);
+        return response;
+    }
+
+    /** TODO 只有May帐号能做这个操作 */
     @Override public Response<User> createAdminUser(String password) {
         User user = new User();
         user.setPassword(password);
@@ -73,14 +87,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override public Response<User> update(Long id, Map<String, Object> fields) {
-        Gson gson = new Gson();
         Response<User> response = new Response<>();
         repository.findById(id).ifPresentOrElse(user -> {
-            var json = gson.toJson(user);
-            Map<String, Object> map = gson.fromJson(json, TypeUtil.map(String.class, Object.class));
-            map.putAll(fields);
-            json = gson.toJson(map);
-            var save = gson.fromJson(json, User.class);
+            var save = JsonUtil.merge(user, fields, User.class);
             repository.save(save);
             response.setStatus(ResponseStatusEnum.Ok);
             response.setData(save);
@@ -88,6 +97,14 @@ public class UserServiceImpl implements UserService {
             response.setStatus(ResponseStatusEnum.UserNotFound);
             response.setMessage("用户不存在");
         });
+        return response;
+    }
+
+    @Override public Response<List<User>> usersToVerify() {
+        List<User> users = repository.findUsersByState(UserStateTypeEnum.NotVerify);
+        Response<List<User>> response = new Response<>();
+        response.setStatus(ResponseStatusEnum.Ok);
+        response.setData(users);
         return response;
     }
 }

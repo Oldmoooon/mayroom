@@ -1,6 +1,8 @@
 package name.guyue.backend.db;
 
+import java.util.List;
 import java.util.Optional;
+import name.guyue.backend.enums.UserStateTypeEnum;
 import name.guyue.backend.model.User;
 import org.springframework.data.repository.CrudRepository;
 
@@ -10,4 +12,6 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface UserRepository extends CrudRepository<User, Long> {
     Optional<User> findUserByOpenId(String openId);
+
+    List<User> findUsersByState(UserStateTypeEnum state);
 }

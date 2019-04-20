@@ -9,4 +9,5 @@ public enum ResponseStatusEnum {
     AuthFailure,
     UserNotFound,
     UnsolvedException,
+    HouseNotFound,
 }
