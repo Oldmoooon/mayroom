@@ -8,6 +8,8 @@ package name.guyue.backend.enums;
 public enum HouseStateTypeEnum {
     /** 待审核 */
     NotVerify,
+    /** 审核中 */
+    Verifying,
     /** 审核通过 */
     Verified,
     /** 审核未通过 */

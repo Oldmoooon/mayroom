@@ -37,7 +37,7 @@ public class HouseController {
 
     @RequestMapping(value = "/house/verified",method = RequestMethod.GET)
     public Response houseVerified() {
-        return service.housesNotVerified();
+        return service.housesVerified();
     }
 
     @RequestMapping(value = "/house/get",method = RequestMethod.GET)
