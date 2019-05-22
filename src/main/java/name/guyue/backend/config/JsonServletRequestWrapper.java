@@ -41,11 +41,12 @@ public class JsonServletRequestWrapper extends HttpServletRequestWrapper{
         if (parameterMap == null || parameterMap.isEmpty()) {
             try {
                 bytes = ByteStreams.toByteArray(request.getInputStream());
-                body = new JsonParser().parse(new String(bytes)).getAsJsonObject();
+                if (bytes.length != 0)
+                    body = new JsonParser().parse(new String(bytes)).getAsJsonObject();
             } catch (IOException e) {
                 log.error("io exception when read request input stream.", e);
             }
-            if (body != null) {
+            if (body != null && body.isJsonNull()) {
                 parameterMap = Maps.newHashMap();
                 body.entrySet().forEach(e -> {
                     String[] value;
