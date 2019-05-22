@@ -1,5 +1,7 @@
 package name.guyue.backend.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.gson.annotations.Expose;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -18,6 +20,7 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import name.guyue.backend.config.CustomSerializer;
 import name.guyue.backend.enums.GroupEnum;
 import name.guyue.backend.enums.UserStateTypeEnum;
 import org.springframework.data.annotation.CreatedDate;
@@ -49,13 +52,17 @@ public class User {
     GroupEnum group = GroupEnum.Normal;
 
     @Column(length = 20)
+    @Expose
     private String phone;
 
     /** 密码，此处应该是密码的哈希 */
+    @Expose
     private String password;
 
     /** 提交的房源，删除用户，他提交的所有房源都会被删掉 */
     @OneToMany(mappedBy = "author", cascade= CascadeType.ALL, fetch= FetchType.LAZY)
+
+    @JsonSerialize(using = CustomSerializer.class)
     private List<House> houses;
 
     /** 用户的状态 */

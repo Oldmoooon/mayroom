@@ -41,7 +41,7 @@ public class UserController {
         return resp;
     }
 
-    @RequestMapping(value = "/user/admin/login",method = RequestMethod.POST)
+    @RequestMapping(value = "/user/admin/login",method = RequestMethod.POST, produces = "application/json")
     public Response adminLogin(
         @RequestParam(name = "id") Long id,
         @RequestParam(name = "openGid") String openGid,

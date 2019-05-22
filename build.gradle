@@ -43,7 +43,7 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-logging:+'
     compile 'org.springframework.boot:spring-boot-starter-data-redis:+'
     compile 'org.springframework.session:spring-session-data-redis:+'
-//    compile 'joda-time.joda-time:+'
+    compile 'com.google.guava:guava:+'
     compileOnly 'org.projectlombok:lombok:+'
     runtimeOnly 'mysql:mysql-connector-java:+'
     annotationProcessor 'org.projectlombok:lombok:+'

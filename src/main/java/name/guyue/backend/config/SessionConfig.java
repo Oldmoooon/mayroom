@@ -2,6 +2,7 @@ package name.guyue.backend.config;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,17 @@ public class SessionConfig implements WebMvcConfigurer {
             .excludePathPatterns("/user/admin/login")
             //拦截路径
             .addPathPatterns("/**");
+        registry.addInterceptor(new LogInterceptor())
+            .addPathPatterns("/**");
+    }
+
+    public class LogInterceptor implements HandlerInterceptor {
+
+        @Override
+        public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+            logger.info("request to {}", request.getRequestURL());
+            return true;
+        }
     }
 
     public class LoginInterceptor implements HandlerInterceptor {
