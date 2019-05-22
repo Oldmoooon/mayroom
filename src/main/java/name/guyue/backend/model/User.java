@@ -1,7 +1,7 @@
 package name.guyue.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.google.gson.annotations.Expose;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -52,11 +52,11 @@ public class User {
     GroupEnum group = GroupEnum.Normal;
 
     @Column(length = 20)
-    @Expose
+    @JsonIgnore
     private String phone;
 
     /** 密码，此处应该是密码的哈希 */
-    @Expose
+    @JsonIgnore
     private String password;
 
     /** 提交的房源，删除用户，他提交的所有房源都会被删掉 */

@@ -3,7 +3,6 @@ package name.guyue.backend.controller;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
 import name.guyue.backend.model.Response;
-import name.guyue.backend.model.request.AdminLogin;
 import name.guyue.backend.service.UserService;
 import name.guyue.backend.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,12 +41,14 @@ public class UserController {
         return resp;
     }
 
-    @RequestMapping(value = "/user/admin/login",method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(value = "/user/admin/login",method = RequestMethod.POST)
     public Response adminLogin(
-        @RequestBody AdminLogin data,
+        @RequestParam("id") Long id,
+        @RequestParam("openGid") String openGid,
+        @RequestParam("password") String password,
         HttpSession session
     ) {
-        var resp = service.adminLogin(data.getId(), data.getOpenGid(), data.getPassword());
+        var resp = service.adminLogin(id, openGid, password);
         if (ResponseUtil.isOk(resp)) {
             session.setAttribute(session.getId(), resp.getData().getId());
         }
