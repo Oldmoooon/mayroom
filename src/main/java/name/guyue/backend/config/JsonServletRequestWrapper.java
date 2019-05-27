@@ -26,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 public class JsonServletRequestWrapper extends HttpServletRequestWrapper{
 
     private Map<String, String[]> parameterMap;
-    private JsonObject body = null;
     private byte[] bytes;
 
     /**
@@ -39,6 +38,7 @@ public class JsonServletRequestWrapper extends HttpServletRequestWrapper{
         super(request);
         parameterMap = request.getParameterMap();
         if (parameterMap == null || parameterMap.isEmpty()) {
+            JsonObject body = null;
             try {
                 bytes = ByteStreams.toByteArray(request.getInputStream());
                 if (bytes.length != 0)
@@ -46,7 +46,7 @@ public class JsonServletRequestWrapper extends HttpServletRequestWrapper{
             } catch (IOException e) {
                 log.error("io exception when read request input stream.", e);
             }
-            if (body != null && body.isJsonNull()) {
+            if (body != null && !body.isJsonNull()) {
                 parameterMap = Maps.newHashMap();
                 body.entrySet().forEach(e -> {
                     String[] value;
