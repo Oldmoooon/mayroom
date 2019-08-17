@@ -17,6 +17,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class DemoUser {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,7 +31,8 @@ public class DemoUser {
         this.password = password;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "DemoUser{" + "id=" + id + ", username='" + username + '\'' + ", password='" + password + '\'' + '}';
     }
 }

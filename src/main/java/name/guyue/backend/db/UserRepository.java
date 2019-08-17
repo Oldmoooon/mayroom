@@ -11,6 +11,7 @@ import org.springframework.data.repository.CrudRepository;
  * @date 2019-03-25
  */
 public interface UserRepository extends CrudRepository<User, Long> {
+
     Optional<User> findUserByOpenId(String openId);
 
     List<User> findUsersByState(UserStateTypeEnum state);

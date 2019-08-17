@@ -12,6 +12,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class AdminLogin {
+
     Long id;
     String openGid;
     String password;

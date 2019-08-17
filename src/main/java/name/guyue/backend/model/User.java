@@ -40,41 +40,51 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @NoArgsConstructor
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String openId;
-
-    /** 用户组，用来做权限管理 */
+    /**
+     * 用户组，用来做权限管理
+     */
     @Column(name = "`group`", nullable = false)
     @Enumerated(EnumType.STRING)
     GroupEnum group = GroupEnum.Normal;
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String openId;
     @Column(length = 20)
     @JsonIgnore
     private String phone;
 
-    /** 密码，此处应该是密码的哈希 */
+    /**
+     * 密码，此处应该是密码的哈希
+     */
     @JsonIgnore
     private String password;
 
-    /** 提交的房源，删除用户，他提交的所有房源都会被删掉 */
-    @OneToMany(mappedBy = "author", cascade= CascadeType.ALL, fetch= FetchType.LAZY)
+    /**
+     * 提交的房源，删除用户，他提交的所有房源都会被删掉
+     */
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 
     @JsonSerialize(using = CustomSerializer.class)
     private List<House> houses;
 
-    /** 用户的状态 */
+    /**
+     * 用户的状态
+     */
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserStateTypeEnum state = UserStateTypeEnum.NotVerify;
 
-    /** 创建时间 */
+    /**
+     * 创建时间
+     */
     @CreatedDate
     private Date createTime;
 
-    /** 修改时间 */
+    /**
+     * 修改时间
+     */
     @LastModifiedDate
     private Date modifyTime;
 }

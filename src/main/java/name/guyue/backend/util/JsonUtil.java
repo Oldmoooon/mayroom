@@ -8,7 +8,10 @@ import java.util.Map;
  * @date 2019-04-20
  */
 public class JsonUtil {
-    /** 把fields的内容合并到t对象中 */
+
+    /**
+     * 把fields的内容合并到t对象中
+     */
     public static <T> T merge(T t, Map<String, Object> fields, Class<T> tClass) {
         Gson gson = new Gson();
         var json = gson.toJson(t);

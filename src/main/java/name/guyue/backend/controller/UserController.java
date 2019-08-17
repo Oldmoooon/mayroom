@@ -15,18 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * vx自动登录、管理员登录、查询用户信息、新建管理员用户、修改用户信息
+ *
  * @author hujia
  * @date 2019-03-25
  */
 @RestController
 public class UserController {
+
     private final UserService service;
 
     public UserController(@Qualifier("userServiceImpl") UserService service) {
         this.service = service;
     }
 
-    @RequestMapping(value = "/user/login",method = RequestMethod.POST)
+    @RequestMapping(value = "/user/login", method = RequestMethod.POST)
     public Response login(
         @RequestParam(name = "openId") String openId,
         @RequestParam(name = "openGid") String openGid,
@@ -41,7 +43,7 @@ public class UserController {
         return resp;
     }
 
-    @RequestMapping(value = "/user/admin/login",method = RequestMethod.POST)
+    @RequestMapping(value = "/user/admin/login", method = RequestMethod.POST)
     public Response adminLogin(
         @RequestParam("id") Long id,
         @RequestParam("openGid") String openGid,
@@ -55,14 +57,14 @@ public class UserController {
         return resp;
     }
 
-    @RequestMapping(value = "/user/create",method = RequestMethod.POST)
+    @RequestMapping(value = "/user/create", method = RequestMethod.POST)
     public Response create(
         @RequestParam(name = "openId", required = false) String openId
     ) {
         return service.createNormalUser(openId);
     }
 
-    @RequestMapping(value = "/user/query",method = RequestMethod.GET)
+    @RequestMapping(value = "/user/query", method = RequestMethod.GET)
     public Response query(
         @RequestParam(name = "id", required = false) Long id,
         @RequestParam(name = "openId", required = false) String openId
@@ -70,16 +72,16 @@ public class UserController {
         return service.query(id, openId);
     }
 
-    @RequestMapping(value = "/user/admin/create",method = RequestMethod.POST)
+    @RequestMapping(value = "/user/admin/create", method = RequestMethod.POST)
     public Response createAdminUser(
         @RequestParam(name = "password") String password,
         HttpSession session
     ) {
         Object userId = session.getAttribute(session.getId());
-        return service.createAdminUser((Long)userId, password);
+        return service.createAdminUser((Long) userId, password);
     }
 
-    @RequestMapping(value = "/user/update/{id}",method = RequestMethod.PATCH)
+    @RequestMapping(value = "/user/update/{id}", method = RequestMethod.PATCH)
     public Response update(
         @PathVariable Long id,
         @RequestBody Map<String, Object> fields
@@ -87,7 +89,7 @@ public class UserController {
         return service.update(id, fields);
     }
 
-    @RequestMapping(value = "/user/list/not_verified",method = RequestMethod.GET)
+    @RequestMapping(value = "/user/list/not_verified", method = RequestMethod.GET)
     public Response update() {
         return service.usersToVerify();
     }

@@ -18,21 +18,25 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class HouseServiceImpl implements HouseService {
+
     private final HouseRepository repository;
 
     public HouseServiceImpl(HouseRepository repository) {
         this.repository = repository;
     }
 
-    @Override public Response<List<House>> housesVerified() {
+    @Override
+    public Response<List<House>> housesVerified() {
         return housesByState(HouseStateTypeEnum.Verified);
     }
 
-    @Override public Response<List<House>> housesNotVerified() {
+    @Override
+    public Response<List<House>> housesNotVerified() {
         return housesByState(HouseStateTypeEnum.NotVerify);
     }
 
-    @Override public Response<House> houseById(Long id) {
+    @Override
+    public Response<House> houseById(Long id) {
         Response<House> response = new Response<>();
         Optional<House> house = repository.findById(id);
         response.setStatus(ResponseStatusEnum.Ok);
@@ -40,7 +44,8 @@ public class HouseServiceImpl implements HouseService {
         return response;
     }
 
-    @Override public Response<House> update(Long id, Map<String, Object> fields) {
+    @Override
+    public Response<House> update(Long id, Map<String, Object> fields) {
         Response<House> response = new Response<>();
         repository.findById(id).ifPresentOrElse(house -> {
             var save = JsonUtil.merge(house, fields, House.class);
@@ -54,7 +59,8 @@ public class HouseServiceImpl implements HouseService {
         return response;
     }
 
-    @Override public Response<House> create(User user) {
+    @Override
+    public Response<House> create(User user) {
         Response<House> response = new Response<>();
         if (user == null) {
             response.setStatus(ResponseStatusEnum.UserNotFound);

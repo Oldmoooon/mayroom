@@ -10,7 +10,17 @@ import java.util.Map;
  * @date 2019-03-30
  */
 public class TypeUtil {
+
+    public static Type map(Class<?> clz1, Class<?> clz2) {
+        return new MapParameterizedType(clz1, clz2);
+    }
+
+    public static Type list(Class<?> clz) {
+        return new ListParameterizedType(clz);
+    }
+
     private static class MapParameterizedType implements ParameterizedType {
+
         private Type key;
         private Type value;
 
@@ -19,44 +29,43 @@ public class TypeUtil {
             this.value = value;
         }
 
-        @Override public Type[] getActualTypeArguments() {
-            return new Type[] {key, value};
+        @Override
+        public Type[] getActualTypeArguments() {
+            return new Type[]{key, value};
         }
 
-        @Override public Type getRawType() {
+        @Override
+        public Type getRawType() {
             return Map.class;
         }
 
-        @Override public Type getOwnerType() {
+        @Override
+        public Type getOwnerType() {
             return null;
         }
     }
 
     private static class ListParameterizedType implements ParameterizedType {
+
         private Type type;
 
         private ListParameterizedType(Type type) {
             this.type = type;
         }
 
-        @Override public Type[] getActualTypeArguments() {
-            return new Type[] {type};
+        @Override
+        public Type[] getActualTypeArguments() {
+            return new Type[]{type};
         }
 
-        @Override public Type getRawType() {
+        @Override
+        public Type getRawType() {
             return ArrayList.class;
         }
 
-        @Override public Type getOwnerType() {
+        @Override
+        public Type getOwnerType() {
             return null;
         }
-    }
-
-    public static Type map(Class<?> clz1, Class<?> clz2) {
-        return new MapParameterizedType(clz1, clz2);
-    }
-
-    public static  Type list(Class<?> clz) {
-        return new ListParameterizedType(clz);
     }
 }

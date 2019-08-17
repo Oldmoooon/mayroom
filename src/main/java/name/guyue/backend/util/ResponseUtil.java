@@ -8,6 +8,7 @@ import name.guyue.backend.model.Response;
  * @date 2019-03-25
  */
 public class ResponseUtil {
+
     public static boolean isOk(Response response) {
         if (response == null) {
             return false;

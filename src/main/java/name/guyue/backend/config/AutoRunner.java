@@ -1,5 +1,7 @@
 package name.guyue.backend.config;
 
+import java.math.BigDecimal;
+import java.util.Optional;
 import name.guyue.backend.db.HouseRepository;
 import name.guyue.backend.db.UserRepository;
 import name.guyue.backend.enums.BedroomTypeEnum;
@@ -13,17 +15,16 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.util.Optional;
-
 /**
  * 用来造一些假数据
+ *
  * @author hujia
  * @date 2019-04-20
  */
 @Component
 @Order(value = 1)
 public class AutoRunner implements ApplicationRunner {
+
     private final UserRepository userRepository;
     private final HouseRepository houseRepository;
 
@@ -32,7 +33,8 @@ public class AutoRunner implements ApplicationRunner {
         this.houseRepository = houseRepository;
     }
 
-    @Override public void run(ApplicationArguments args) {
+    @Override
+    public void run(ApplicationArguments args) {
         // May账号
         Optional<User> may = userRepository.findById(1L);
         User user;

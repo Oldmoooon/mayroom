@@ -16,14 +16,15 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class DemoAspect {
+
     private static Logger logger = LoggerFactory.getLogger(DemoAspect.class);
 
     @Pointcut("@annotation(org.springframework.web.bind.annotation.RestController)")
-    public void demoPointCut() { }
+    public void demoPointCut() {
+    }
 
     @Before("demoPointCut()")
     public void doBefore(JoinPoint joinPoint) {
         logger.info("REQUEST: {}", joinPoint.getArgs());
-        System.out.println("REQUEST: " + Arrays.toString(joinPoint.getArgs()));
     }
 }

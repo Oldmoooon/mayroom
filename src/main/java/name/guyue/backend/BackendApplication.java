@@ -15,17 +15,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@SpringBootApplication @EnableJpaAuditing public class BackendApplication {
+@SpringBootApplication
+@EnableJpaAuditing
+public class BackendApplication {
 
     public static void main(String... args) {
         SpringApplication.run(BackendApplication.class, args);
     }
 
-    @Bean public GracefulShutdown gracefulShutdown() {
+    @Bean
+    public GracefulShutdown gracefulShutdown() {
         return new GracefulShutdown();
     }
 
-    @Bean ServletWebServerFactory servletContainer() {
+    @Bean
+    ServletWebServerFactory servletContainer() {
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
         tomcat.addConnectorCustomizers(gracefulShutdown());
         return tomcat;
@@ -36,11 +40,13 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
         private final Logger logger = LoggerFactory.getLogger(GracefulShutdown.class);
         private volatile Connector connector;
 
-        @Override public void customize(Connector connector) {
+        @Override
+        public void customize(Connector connector) {
             this.connector = connector;
         }
 
-        @Override public void onApplicationEvent(ContextClosedEvent event) {
+        @Override
+        public void onApplicationEvent(ContextClosedEvent event) {
             logger.info("shutdown start...");
             this.connector.pause();
             var executor = this.connector.getProtocolHandler().getExecutor();

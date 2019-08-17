@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 房源：拉取已通过列表、拉取未通过列表、根据id查询特定、修改、新增
+ *
  * @author hujia
  * @date 2019-04-20
  */
 @RestController
 public class HouseController {
+
     private final HouseService service;
     private final UserRepository userRepository;
 
@@ -30,31 +32,31 @@ public class HouseController {
         this.userRepository = userRepository;
     }
 
-    @RequestMapping(value = "/house/not_verified",method = RequestMethod.GET)
+    @RequestMapping(value = "/house/not_verified", method = RequestMethod.GET)
     public Response houseNotVerified() {
         return service.housesNotVerified();
     }
 
-    @RequestMapping(value = "/house/verified",method = RequestMethod.GET)
+    @RequestMapping(value = "/house/verified", method = RequestMethod.GET)
     public Response houseVerified() {
         return service.housesVerified();
     }
 
-    @RequestMapping(value = "/house/get",method = RequestMethod.GET)
+    @RequestMapping(value = "/house/get", method = RequestMethod.GET)
     public Response get(
         @RequestParam(name = "id", required = false) Long id
     ) {
         return service.houseById(id);
     }
 
-    @RequestMapping(value = "/house/create",method = RequestMethod.POST)
+    @RequestMapping(value = "/house/create", method = RequestMethod.POST)
     public Response create(HttpSession session) {
         Object userId = session.getAttribute(session.getId());
-        Optional<User> user = userRepository.findById((Long)userId);
+        Optional<User> user = userRepository.findById((Long) userId);
         return service.create(user.orElse(null));
     }
 
-    @RequestMapping(value = "/house/update/{id}",method = RequestMethod.PATCH)
+    @RequestMapping(value = "/house/update/{id}", method = RequestMethod.PATCH)
     public Response update(
         @PathVariable Long id,
         @RequestBody Map<String, Object> fields

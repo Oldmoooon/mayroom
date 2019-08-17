@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2019-05-22
  */
 @Slf4j
-public class JsonServletRequestWrapper extends HttpServletRequestWrapper{
+public class JsonServletRequestWrapper extends HttpServletRequestWrapper {
 
     private Map<String, String[]> parameterMap;
     private byte[] bytes;
@@ -34,15 +34,16 @@ public class JsonServletRequestWrapper extends HttpServletRequestWrapper{
      * @param request The request to wrap
      * @throws IllegalArgumentException if the request is null
      */
-    public JsonServletRequestWrapper(HttpServletRequest request) {
+    JsonServletRequestWrapper(HttpServletRequest request) {
         super(request);
         parameterMap = request.getParameterMap();
         if (parameterMap == null || parameterMap.isEmpty()) {
             JsonObject body = null;
             try {
                 bytes = ByteStreams.toByteArray(request.getInputStream());
-                if (bytes.length != 0)
+                if (bytes.length != 0) {
                     body = new JsonParser().parse(new String(bytes)).getAsJsonObject();
+                }
             } catch (IOException e) {
                 log.error("io exception when read request input stream.", e);
             }
@@ -57,7 +58,7 @@ public class JsonServletRequestWrapper extends HttpServletRequestWrapper{
                             value[i] = array.get(i).getAsString();
                         }
                     } else {
-                        value = new String[] {e.getValue().getAsString()};
+                        value = new String[]{e.getValue().getAsString()};
                     }
                     parameterMap.put(e.getKey(), value);
                 });
@@ -73,7 +74,7 @@ public class JsonServletRequestWrapper extends HttpServletRequestWrapper{
     @Override
     public String getParameter(String name) {
         String[] value = parameterMap.get(name);
-        return value != null && value.length > 0 ? value[0] : null;
+        return value != null && value.length > 0 ? value[0] : "";
     }
 
     @Override

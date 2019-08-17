@@ -11,13 +11,15 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DemoServiceImpl implements DemoService {
+
     private final DemoUserRepository repository;
 
     public DemoServiceImpl(DemoUserRepository repository) {
         this.repository = repository;
     }
 
-    @Override public Boolean demoHandler(Long id, String password) {
+    @Override
+    public Boolean demoHandler(Long id, String password) {
         Optional<DemoUser> oUser = repository.findById(id);
         return oUser.map(demoUser -> password.equals(demoUser.getPassword())).orElse(false);
     }

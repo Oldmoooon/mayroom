@@ -23,6 +23,7 @@ import org.springframework.util.StringUtils;
  */
 @Component
 public class UserServiceImpl implements UserService {
+
     private final UserRepository repository;
     private final StringRedisTemplate redis;
     private final Logger logger = LoggerFactory.getLogger(UserService.class);
@@ -32,7 +33,8 @@ public class UserServiceImpl implements UserService {
         this.redis = redis;
     }
 
-    @Override public Response<User> login(String openId, String openGid, String token) {
+    @Override
+    public Response<User> login(String openId, String openGid, String token) {
         Response<User> response = new Response<>();
         Boolean isMember = redis.opsForSet().isMember(ConstantsUtil.WHITE_LIST_OF_GROUP_REDIS_KEY, openGid);
         if (isMember == null || !isMember) {
@@ -53,7 +55,8 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    @Override public Response<User> adminLogin(Long id, String openGid, String password) {
+    @Override
+    public Response<User> adminLogin(Long id, String openGid, String password) {
         Response<User> response = new Response<>();
         repository.findById(id).ifPresentOrElse(user -> {
             if (user.getPassword().equals(password)) {
@@ -71,7 +74,8 @@ public class UserServiceImpl implements UserService {
         return response;
     }
 
-    @Override public Response<User> query(Long id, String openId) {
+    @Override
+    public Response<User> query(Long id, String openId) {
         Response<User> response = new Response<>();
         if (StringUtils.isEmpty(id)) {
             repository.findById(id).ifPresent(response::setData);
@@ -86,7 +90,8 @@ public class UserServiceImpl implements UserService {
         return response;
     }
 
-    @Override public Response<User> createNormalUser(String openId) {
+    @Override
+    public Response<User> createNormalUser(String openId) {
         User user = new User();
         user.setGroup(GroupEnum.Normal);
         user.setState(UserStateTypeEnum.NotVerify);
@@ -97,8 +102,11 @@ public class UserServiceImpl implements UserService {
         return response;
     }
 
-    /** 只有May帐号能做这个操作 */
-    @Override public Response<User> createAdminUser(Long userId, String password) {
+    /**
+     * 只有May帐号能做这个操作
+     */
+    @Override
+    public Response<User> createAdminUser(Long userId, String password) {
         Optional<User> admin = repository.findById(userId);
         if (admin.isPresent() && admin.get().getGroup().equals(GroupEnum.May)) {
             User user = new User();
@@ -118,7 +126,8 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override public Response<User> update(Long id, Map<String, Object> fields) {
+    @Override
+    public Response<User> update(Long id, Map<String, Object> fields) {
         Response<User> response = new Response<>();
         repository.findById(id).ifPresentOrElse(user -> {
             var save = JsonUtil.merge(user, fields, User.class);
@@ -132,7 +141,8 @@ public class UserServiceImpl implements UserService {
         return response;
     }
 
-    @Override public Response<List<User>> usersToVerify() {
+    @Override
+    public Response<List<User>> usersToVerify() {
         List<User> users = repository.findUsersByState(UserStateTypeEnum.NotVerify);
         Response<List<User>> response = new Response<>();
         response.setStatus(ResponseStatusEnum.Ok);
