@@ -1,6 +1,6 @@
 package name.guyue.backend.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -11,7 +11,8 @@ import org.junit.Test;
 
 public class JsonUtilTest {
 
-    @Test public void merge() {
+    @Test
+    public void merge() {
         House house = new House();
         house.setState(HouseStateTypeEnum.NotVerify);
         house.setArea(BigDecimal.TEN);

@@ -1,13 +1,17 @@
 package name.guyue.backend.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.servlet.http.HttpSession;
+import name.guyue.backend.db.HouseRepository;
 import name.guyue.backend.db.UserRepository;
+import name.guyue.backend.enums.HouseStateTypeEnum;
+import name.guyue.backend.enums.ResponseStatusEnum;
+import name.guyue.backend.model.House;
 import name.guyue.backend.model.Response;
 import name.guyue.backend.model.User;
-import name.guyue.backend.service.HouseService;
-import org.springframework.beans.factory.annotation.Qualifier;
+import name.guyue.backend.util.JsonUtil;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,36 +28,47 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HouseController {
 
-    private final HouseService service;
     private final UserRepository userRepository;
+    private final HouseRepository repository;
 
-    public HouseController(@Qualifier("houseServiceImpl") HouseService service, UserRepository userRepository) {
-        this.service = service;
+    public HouseController(UserRepository userRepository, HouseRepository repository) {
         this.userRepository = userRepository;
+        this.repository = repository;
     }
 
     @RequestMapping(value = "/house/not_verified", method = RequestMethod.GET)
     public Response houseNotVerified() {
-        return service.housesNotVerified();
+        return housesByState(HouseStateTypeEnum.NotVerify);
     }
 
     @RequestMapping(value = "/house/verified", method = RequestMethod.GET)
     public Response houseVerified() {
-        return service.housesVerified();
+        return housesByState(HouseStateTypeEnum.Verified);
     }
 
     @RequestMapping(value = "/house/get", method = RequestMethod.GET)
     public Response get(
         @RequestParam(name = "id", required = false) Long id
     ) {
-        return service.houseById(id);
+        Response<House> response = new Response<>();
+        Optional<House> house = repository.findById(id);
+        response.setStatus(ResponseStatusEnum.Ok);
+        response.setData(house.orElse(null));
+        return response;
     }
 
     @RequestMapping(value = "/house/create", method = RequestMethod.POST)
     public Response create(HttpSession session) {
         Object userId = session.getAttribute(session.getId());
         Optional<User> user = userRepository.findById((Long) userId);
-        return service.create(user.orElse(null));
+        Response<House> response = new Response<>();
+        House house = new House();
+        house.setAuthor(user.orElseThrow());
+        house.setState(HouseStateTypeEnum.NotVerify);
+        repository.save(house);
+        response.setStatus(ResponseStatusEnum.Ok);
+        response.setData(house);
+        return response;
     }
 
     @RequestMapping(value = "/house/update/{id}", method = RequestMethod.PATCH)
@@ -61,6 +76,24 @@ public class HouseController {
         @PathVariable Long id,
         @RequestBody Map<String, Object> fields
     ) {
-        return service.update(id, fields);
+        Response<House> response = new Response<>();
+        repository.findById(id).ifPresentOrElse(house -> {
+            var save = JsonUtil.merge(house, fields, House.class);
+            repository.save(save);
+            response.setStatus(ResponseStatusEnum.Ok);
+            response.setData(save);
+        }, () -> {
+            response.setStatus(ResponseStatusEnum.HouseNotFound);
+            response.setMessage("房源不存在");
+        });
+        return response;
+    }
+
+    private Response<List<House>> housesByState(HouseStateTypeEnum state) {
+        Response<List<House>> response = new Response<>();
+        List<House> data = repository.findHousesByStateEquals(state);
+        response.setStatus(ResponseStatusEnum.Ok);
+        response.setData(data);
+        return response;
     }
 }

@@ -4,7 +4,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin")
+        classpath('org.springframework.boot:spring-boot-gradle-plugin')
     }
 }
 
@@ -20,8 +20,6 @@ apply plugin: 'io.spring.dependency-management'
 
 group = 'name.guyue'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
-targetCompatibility = '11'
 
 configurations {
     compileOnly {
@@ -36,6 +34,9 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter:+'
+    implementation 'com.graphql-java:graphql-java:+'
+    implementation 'io.github.graphql-java:graphql-java-annotations:+'
+    implementation 'com.graphql-java:graphql-java-spring-boot-starter-webmvc:+'
     implementation 'com.google.code.gson:gson:+'
     compile 'org.springframework.boot:spring-boot-starter-web:+'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa:+'
